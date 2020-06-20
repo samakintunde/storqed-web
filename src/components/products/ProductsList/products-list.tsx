@@ -1,10 +1,11 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 
 const { Column } = Table;
 
-export type Product = {
+export interface IProduct {
   id: number;
   name: string;
   ean: string;
@@ -14,7 +15,7 @@ export type Product = {
   active: boolean;
   quantity: number;
   price: number;
-};
+}
 
 type ProductListHeadingProps = {
   title: string;
@@ -24,16 +25,27 @@ type ProductListHeadingProps = {
 
 type ProductsListProps = {
   headings: ProductListHeadingProps[];
-  products: Object[];
+  products: IProduct[];
 };
 
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products } = props;
+  const history = useHistory();
+
+  const handleViewClick = (record: IProduct) => {
+    history.push(`/products/${record.id}`);
+  };
+
+  const handleEditClick = (record: IProduct) => {
+    history.push(`/products/${record.id}`, {
+      isEditing: true,
+    });
+  };
 
   return (
     <div>
       <Table dataSource={products}>
-        {headings.map((heading) => (
+        {headings.map((heading, index) => (
           <Column
             title={heading.title}
             dataIndex={heading.dataIndex}
@@ -42,10 +54,15 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
         ))}
         <Column
           key="action"
-          render={(text, record) => (
+          render={(record) => (
             <Space size="middle">
-              <Button>View</Button>
-              <Button icon={<EditTwoTone />}>Edit</Button>
+              <Button onClick={() => handleViewClick(record)}>View</Button>
+              <Button
+                icon={<EditTwoTone />}
+                onClick={() => handleEditClick(record)}
+              >
+                Edit
+              </Button>
               <Button icon={<DeleteTwoTone />}>Delete</Button>
             </Space>
           )}

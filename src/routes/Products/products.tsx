@@ -27,6 +27,11 @@ const Products = () => {
               title: "Quantity",
             },
             {
+              key: "type",
+              dataIndex: "type",
+              title: "Type",
+            },
+            {
               key: "price",
               dataIndex: "price",
               title: "Price",
