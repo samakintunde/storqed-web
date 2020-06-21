@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { Layout } from "antd";
 import ProductsList from "../../components/products/ProductsList";
-import products from "../../data/products";
+import { useProducts } from "../../context/ProductsContext";
+import { IProduct } from "../../components/products/ProductsList/products-list";
+import {
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
+} from "../../context/ProductsContext/action-types";
+import { productsDb } from "../../models/db";
 
 const { Content } = Layout;
 
 const Products = () => {
+  // @ts-ignore
+  const { products, dispatchProducts } = useProducts();
+
+  const handleDelete = useCallback((product: IProduct) => {
+    dispatchProducts({
+      type: DELETE_PRODUCT,
+      payload: product,
+    });
+  }, []);
+
+  useEffect(() => {
+    productsDb.update(products);
+  }, [products]);
+
   return (
     <Layout>
       <Content style={{ padding: "50px 50px 0" }}>
@@ -38,6 +58,7 @@ const Products = () => {
             },
           ]}
           products={products}
+          handleProductDelete={handleDelete}
         />
       </Content>
     </Layout>

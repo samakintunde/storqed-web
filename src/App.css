@@ -7,10 +7,19 @@
   width: 100%;
 }
 
+.ant-page-header {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 p {
   margin-bottom: 0rem;
 }
 
 .color-danger {
   color: tomato;
+}
+
+form label p:nth-child(1) {
+  font-weight: bold;
 }

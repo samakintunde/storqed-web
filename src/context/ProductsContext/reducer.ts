@@ -1,28 +1,23 @@
 import { IProduct } from "../../components/products/ProductsList/products-list";
 import { ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from "./action-types";
-import productsData from "../../data/products";
+import { productsDb } from "../../models/db";
+import { initialState } from ".";
 
-type TProductsReducerState = IProduct[];
-
-type TProductsReducerAction = {
+type ProductsReducerAction = {
   type: string;
   payload: IProduct;
 };
 
-type TProductsReducer = {
-  state: TProductsReducerState;
-  action: TProductsReducerAction;
-};
-
-const productsReducer = ({
-  state = productsData,
-  action,
-}: TProductsReducer): IProduct[] => {
+const productsReducer = (
+  state: IProduct[] = initialState,
+  action: ProductsReducerAction
+) => {
   const { payload, type } = action;
 
   switch (type) {
     case ADD_PRODUCT:
-      return [...state, payload];
+      const newProducts = [...state, payload];
+      return newProducts;
 
     case UPDATE_PRODUCT:
       let updatedProducts = state.map((product) => {

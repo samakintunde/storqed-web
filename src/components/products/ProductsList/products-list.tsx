@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import { useProducts } from "../../../context/ProductsContext";
+import { DELETE_PRODUCT } from "../../../context/ProductsContext/action-types";
 
 const { Column } = Table;
 
@@ -26,11 +28,13 @@ type ProductListHeadingProps = {
 type ProductsListProps = {
   headings: ProductListHeadingProps[];
   products: IProduct[];
+  handleProductDelete: Function;
 };
 
 const ProductsList: React.FC<ProductsListProps> = (props) => {
-  const { headings, products } = props;
+  const { headings, products, handleProductDelete } = props;
   const history = useHistory();
+  // @ts-ignore
 
   const handleViewClick = (record: IProduct) => {
     history.push(`/products/${record.id}`);
@@ -40,6 +44,10 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
     history.push(`/products/${record.id}`, {
       isEditing: true,
     });
+  };
+
+  const handleDelete = (record: IProduct) => {
+    handleProductDelete(record);
   };
 
   return (
@@ -63,7 +71,12 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
               >
                 Edit
               </Button>
-              <Button icon={<DeleteTwoTone />}>Delete</Button>
+              <Button
+                icon={<DeleteTwoTone />}
+                onClick={() => handleDelete(record)}
+              >
+                Delete
+              </Button>
             </Space>
           )}
         />

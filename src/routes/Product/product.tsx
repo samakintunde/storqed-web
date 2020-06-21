@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IProduct } from "../../components/products/ProductsList/products-list";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Input, Button, Space, Checkbox, InputNumber } from "antd";
-import { useParams, useLocation } from "react-router-dom";
-import products from "../../data/products";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 import { DeleteTwoTone, EditTwoTone, SaveTwoTone } from "@ant-design/icons";
+import { useProducts } from "../../context/ProductsContext";
 
 import styles from "./product.module.scss";
 import { parseWeight } from "../../utils/weight";
+import {
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
+} from "../../context/ProductsContext/action-types";
+import { productsDb } from "../../models/db";
 
 type ProductProps = {
   product?: IProduct;
@@ -30,7 +35,10 @@ const validationSchema = Yup.object({
 
 const Product: React.FC<ProductProps> = (props) => {
   const location = useLocation();
+  const history = useHistory();
   const { id } = useParams();
+  // @ts-ignore
+  const { products, dispatchProducts } = useProducts();
   const productId = parseInt(id) - 1;
   const product = products[productId];
 
@@ -43,12 +51,16 @@ const Product: React.FC<ProductProps> = (props) => {
   const formik = useFormik({
     initialValues: {
       ...product,
-      weight: parseWeight(product.weight)?.value,
+      weight: parseWeight(product?.weight)?.value,
     },
     validationSchema,
     onSubmit: (values) => {
       setIsEditing(false);
       console.log(values);
+      dispatchProducts({
+        type: UPDATE_PRODUCT,
+        payload: values,
+      });
     },
   });
 
@@ -56,8 +68,16 @@ const Product: React.FC<ProductProps> = (props) => {
     setIsEditing(true);
   };
   const handleDelete = () => {
-    console.log("deleted");
+    dispatchProducts({
+      type: DELETE_PRODUCT,
+      payload: product,
+    });
+    history.goBack();
   };
+
+  useEffect(() => {
+    productsDb.update(products);
+  }, [products]);
 
   return (
     <div>
@@ -226,7 +246,7 @@ const Product: React.FC<ProductProps> = (props) => {
             <label>
               <p>Active</p>
               {!isEditing ? (
-                <p>{product.active}</p>
+                <p>{product.active.toString()}</p>
               ) : (
                 <>
                   <Checkbox
