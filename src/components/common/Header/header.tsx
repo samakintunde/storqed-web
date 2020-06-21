@@ -1,6 +1,13 @@
 import React from "react";
 import { PageHeader } from "antd";
-import { useLocation, useHistory } from "react-router-dom";
+import {
+  useHistory,
+  useParams,
+  useRouteMatch,
+  RouteProps,
+  match,
+} from "react-router-dom";
+import { useProducts } from "../../../context/ProductsContext";
 
 type HeaderProps = {
   onBack?: () => void;
@@ -9,16 +16,59 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const { onBack, title, subtitle } = props;
+  const { title, subtitle } = props;
 
-  const location = useLocation();
   const history = useHistory();
+  const matchesProduct = useRouteMatch("/products/:id");
+  console.log(matchesProduct);
+  // @ts-ignore
+  const { products } = useProducts();
+
+  const getRoutes = (url: string) => {
+    switch (url) {
+      case "/":
+        return {
+          action: undefined,
+          title: "Storqed",
+        };
+      case "/products":
+        return {
+          action: history.goBack,
+          title: "All Products",
+        };
+      case "/products/edit":
+        return {
+          action: history.goBack,
+          title: "Edit Product",
+        };
+      case "/products/create":
+        return {
+          action: history.goBack,
+          title: "Create Product",
+        };
+      default:
+        return {
+          action: history.goBack,
+          title: "Storqed",
+        };
+    }
+  };
+
+  const generateProps = (pathname: string) => {
+    if (!matchesProduct) return getRoutes(pathname);
+
+    return {
+      action: history.goBack,
+      // @ts-ignore
+      title: matchesProduct.isExact && products[matchesProduct.params.id].name,
+    };
+  };
 
   return (
     <header>
       <PageHeader
-        onBack={location.pathname === "/" ? undefined : history.goBack}
-        title={title}
+        onBack={generateProps(history.location.pathname).action}
+        title={generateProps(history.location.pathname).title}
         subTitle={subtitle}
       />
     </header>
