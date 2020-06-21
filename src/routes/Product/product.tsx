@@ -14,6 +14,7 @@ import {
   DELETE_PRODUCT,
 } from "../../context/ProductsContext/action-types";
 import { productsDb } from "../../models/db";
+import { formatPrice } from "../../utils/amount";
 
 type ProductProps = {
   product?: IProduct;
@@ -82,10 +83,10 @@ const Product: React.FC<ProductProps> = (props) => {
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-        <Space direction="vertical" size={24}>
+        <Space direction="vertical" size={16}>
           <div>
             <label>
-              <p>name</p>
+              <p>Name</p>
               {!isEditing ? (
                 product.name
               ) : (
@@ -217,7 +218,7 @@ const Product: React.FC<ProductProps> = (props) => {
             <label>
               <p>Price</p>
               {!isEditing ? (
-                product.price
+                <>${formatPrice(product.price)}</>
               ) : (
                 <>
                   <InputNumber
@@ -280,7 +281,7 @@ const Product: React.FC<ProductProps> = (props) => {
                   Edit
                 </Button>
                 <Button
-                  icon={<DeleteTwoTone />}
+                  icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
                   htmlType="button"
                   onClick={handleDelete}
                 >

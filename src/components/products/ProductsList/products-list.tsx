@@ -1,9 +1,7 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useProducts } from "../../../context/ProductsContext";
-import { DELETE_PRODUCT } from "../../../context/ProductsContext/action-types";
 
 const { Column } = Table;
 
@@ -34,7 +32,6 @@ type ProductsListProps = {
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products, handleProductDelete } = props;
   const history = useHistory();
-  // @ts-ignore
 
   const handleViewClick = (record: IProduct) => {
     history.push(`/products/${record.id}`);
@@ -52,8 +49,13 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
 
   return (
     <div>
-      <Table dataSource={products}>
-        {headings.map((heading, index) => (
+      <Table
+        dataSource={products}
+        onRow={(record) => ({
+          onClick: () => handleViewClick(record),
+        })}
+      >
+        {headings.map((heading) => (
           <Column
             title={heading.title}
             dataIndex={heading.dataIndex}
@@ -64,7 +66,12 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
           key="action"
           render={(record) => (
             <Space size="middle">
-              <Button onClick={() => handleViewClick(record)}>View</Button>
+              <Button
+                icon={<EyeTwoTone />}
+                onClick={() => handleViewClick(record)}
+              >
+                View
+              </Button>
               <Button
                 icon={<EditTwoTone />}
                 onClick={() => handleEditClick(record)}
@@ -72,7 +79,7 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
                 Edit
               </Button>
               <Button
-                icon={<DeleteTwoTone />}
+                icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
                 onClick={() => handleDelete(record)}
               >
                 Delete
