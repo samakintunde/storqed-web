@@ -24,13 +24,11 @@ type ProductRouteProps = {
 
 const ProductRoute: React.FC<ProductRouteProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
-  const location = useLocation();
   const history = useHistory();
   const { id } = useParams();
   // @ts-ignore
   const { products, dispatchProducts } = useProducts();
   const product = products[parseInt(id)];
-  console.log("object");
 
   const handleDelete = () => {
     dispatchProducts({
@@ -41,7 +39,6 @@ const ProductRoute: React.FC<ProductRouteProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("render");
     productsDb.update(products);
   }, [products]);
 
@@ -100,7 +97,7 @@ const ProductRoute: React.FC<ProductRouteProps> = (props) => {
         </Space>
       </Space>
       {isEditing && (
-        <Route to={`/products/${product.id}/edit`}>
+        <Route path={`/products/:id/edit`}>
           <ProductEditRoute visible={isEditing} setVisible={setIsEditing} />
         </Route>
       )}

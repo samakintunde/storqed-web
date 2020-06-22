@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from "@ant-design/icons";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, useLocation, Link, Route } from "react-router-dom";
+import ProductEditRoute from "../../../routes/ProductEdit";
 
 const { Column } = Table;
 
@@ -31,18 +32,8 @@ type ProductsListProps = {
 
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products, handleProductDelete } = props;
-  const history = useHistory();
+
   const location = useLocation();
-
-  const handleViewClick = (record: IProduct) => {
-    history.push(`/products/${record.id}`);
-  };
-
-  const handleEditClick = (record: IProduct) => {
-    history.push(`/products/${record.id}/edit`, {
-      background: location,
-    });
-  };
 
   const handleDelete = (record: IProduct) => {
     handleProductDelete(record);
@@ -50,12 +41,7 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
 
   return (
     <div>
-      <Table
-        dataSource={products}
-        onRow={(record) => ({
-          onClick: () => handleViewClick(record),
-        })}
-      >
+      <Table dataSource={products}>
         {headings.map((heading) => (
           <Column
             title={heading.title}
@@ -70,13 +56,15 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
               <Link to={`/products/${record.id}`}>
                 <Button icon={<EyeTwoTone />}>View</Button>
               </Link>
-              <Link to={`/products/${record.id}/edit`}>
-                <Button
-                  icon={<EditTwoTone />}
-                  onClick={() => handleEditClick(record)}
-                >
-                  Edit
-                </Button>
+              <Link
+                to={{
+                  pathname: `/products/${record.id}/edit`,
+                  state: {
+                    background: location,
+                  },
+                }}
+              >
+                <Button icon={<EditTwoTone />}>Edit</Button>
               </Link>
               <Button
                 icon={<DeleteTwoTone twoToneColor="#D47B6E" />}

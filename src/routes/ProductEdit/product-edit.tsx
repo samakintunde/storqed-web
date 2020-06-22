@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { parseWeight } from "../../utils/weight";
 import { UPDATE_PRODUCT } from "../../context/ProductsContext/action-types";
-import { Input, Button, Modal, InputNumber, Space, Row, Col } from "antd";
+import { Input, Button, Modal, Space, Row, Col } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 
 const validationSchema = Yup.object({
@@ -30,6 +30,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
   const { visible, setVisible } = props;
   const history = useHistory();
   const { id } = useParams();
+
   // @ts-ignore
   const { products, dispatchProducts } = useProducts();
 
@@ -42,7 +43,6 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       dispatchProducts({
         type: UPDATE_PRODUCT,
         payload: values,
@@ -61,10 +61,11 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
       history.replace(history.location.state.pathname);
     }
     if (setVisible) setVisible(false);
+    history.goBack();
   };
 
   return (
-    <Modal visible={true} footer={null} onCancel={handleCancel}>
+    <Modal visible={visible || true} footer={null} onCancel={handleCancel}>
       <form onSubmit={formik.handleSubmit}>
         <Space style={{ width: "100%" }} size="small" direction="vertical">
           <label>
