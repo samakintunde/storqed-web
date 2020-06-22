@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 
 const { Column } = Table;
 
@@ -32,14 +32,15 @@ type ProductsListProps = {
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products, handleProductDelete } = props;
   const history = useHistory();
+  const location = useLocation();
 
   const handleViewClick = (record: IProduct) => {
     history.push(`/products/${record.id}`);
   };
 
   const handleEditClick = (record: IProduct) => {
-    history.push(`/products/${record.id}`, {
-      isEditing: true,
+    history.push(`/products/${record.id}/edit`, {
+      background: location,
     });
   };
 
@@ -66,18 +67,17 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
           key="action"
           render={(record) => (
             <Space size="middle">
-              <Button
-                icon={<EyeTwoTone />}
-                onClick={() => handleViewClick(record)}
-              >
-                View
-              </Button>
-              <Button
-                icon={<EditTwoTone />}
-                onClick={() => handleEditClick(record)}
-              >
-                Edit
-              </Button>
+              <Link to={`/products/${record.id}`}>
+                <Button icon={<EyeTwoTone />}>View</Button>
+              </Link>
+              <Link to={`/products/${record.id}/edit`}>
+                <Button
+                  icon={<EditTwoTone />}
+                  onClick={() => handleEditClick(record)}
+                >
+                  Edit
+                </Button>
+              </Link>
               <Button
                 icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
                 onClick={() => handleDelete(record)}

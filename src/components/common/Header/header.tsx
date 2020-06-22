@@ -1,12 +1,6 @@
 import React from "react";
 import { PageHeader } from "antd";
-import {
-  useHistory,
-  useParams,
-  useRouteMatch,
-  RouteProps,
-  match,
-} from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useProducts } from "../../../context/ProductsContext";
 
 type HeaderProps = {
@@ -16,11 +10,10 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const { title, subtitle } = props;
+  const { subtitle } = props;
 
   const history = useHistory();
   const matchesProduct = useRouteMatch("/products/:id");
-  console.log(matchesProduct);
   // @ts-ignore
   const { products } = useProducts();
 

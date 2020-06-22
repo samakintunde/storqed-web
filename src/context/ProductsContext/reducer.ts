@@ -1,6 +1,5 @@
 import { IProduct } from "../../components/products/ProductsList/products-list";
 import { ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from "./action-types";
-import { productsDb } from "../../models/db";
 import { initialState } from ".";
 
 type ProductsReducerAction = {
