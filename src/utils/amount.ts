@@ -1,4 +1,4 @@
-const formatPrice = (price: string) => {
+const formatPrice = (price: string | number) => {
   return price
     .toString()
     .replace(",", "")

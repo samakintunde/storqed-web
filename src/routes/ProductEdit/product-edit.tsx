@@ -4,12 +4,11 @@ import { useProducts } from "../../context/ProductsContext";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { parseWeight } from "../../utils/weight";
-import { UPDATE_PRODUCT } from "../../context/ProductsContext/action-types";
-import { Input, Button, Modal, Space, Row, Col } from "antd";
+import { Input, Button, Modal, Space, Row, Col, Checkbox } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
+import { updateProduct } from "../../actions/Products";
 
 const validationSchema = Yup.object({
-  id: Yup.number().required("Required"),
   name: Yup.string().required("Product name is required"),
   ean: Yup.string()
     .min(12, "EAN must at least be 12 digits")
@@ -19,6 +18,7 @@ const validationSchema = Yup.object({
   weight: Yup.number().min(1),
   color: Yup.string(),
   active: Yup.bool().required(),
+  price: Yup.number().required("Price is required"),
 });
 
 type ProductEditRouteProps = {
@@ -29,24 +29,30 @@ type ProductEditRouteProps = {
 const ProductEditRoute = (props: ProductEditRouteProps) => {
   const { visible, setVisible } = props;
   const history = useHistory();
-  const { id } = useParams();
-
-  // @ts-ignore
+  const { slug } = useParams();
   const { products, dispatchProducts } = useProducts();
 
-  const product = products[parseInt(id)];
+  const product = products.products[slug];
+
+  // @ts-ignore
+  const { value: weight, unit } = parseWeight(product?.weight);
 
   const formik = useFormik({
     initialValues: {
       ...product,
-      weight: parseWeight(product?.weight)?.value,
+      weight,
     },
     validationSchema,
     onSubmit: (values) => {
-      dispatchProducts({
-        type: UPDATE_PRODUCT,
-        payload: values,
-      });
+      const payload = {
+        ...values,
+        ean: values.ean,
+        weight: values.weight + unit,
+        price: values.price,
+      };
+
+      updateProduct(dispatchProducts, payload);
+      history.goBack();
     },
   });
 
@@ -73,7 +79,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             <Input
               name="name"
               value={formik.values.name}
-              defaultValue={product.name}
+              onChange={formik.handleChange}
             />
             {formik.errors.name && formik.touched.name && (
               <small className="color-danger">{formik.errors.name}</small>
@@ -83,10 +89,8 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             <small>EAN</small>
             <Input
               name="ean"
-              type="number"
-              width={100}
               value={formik.values.ean}
-              defaultValue={product.ean}
+              onChange={formik.handleChange}
             />
             {formik.errors.ean && formik.touched.ean && (
               <small className="color-danger">{formik.errors.ean}</small>
@@ -97,7 +101,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             <Input
               name="type"
               value={formik.values.type}
-              defaultValue={product.type}
+              onChange={formik.handleChange}
             />
             {formik.errors.type && formik.touched.type && (
               <small className="color-danger">{formik.errors.type}</small>
@@ -107,8 +111,9 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             <small>Weight</small>
             <Input
               name="weight"
+              type="number"
               value={formik.values.weight}
-              defaultValue={product.weight}
+              onChange={formik.handleChange}
             />
             {formik.errors.weight && formik.touched.weight && (
               <small className="color-danger">{formik.errors.weight}</small>
@@ -119,10 +124,25 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             <Input
               name="color"
               value={formik.values.color}
-              defaultValue={product.color}
+              onChange={formik.handleChange}
             />
             {formik.errors.color && formik.touched.color && (
               <small className="color-danger">{formik.errors.color}</small>
+            )}
+          </label>
+          <label>
+            <Space>
+              <small>Active</small>
+              <Checkbox
+                name="active"
+                checked={formik.values.active}
+                onChange={(event) =>
+                  formik.setFieldValue("active", event.target.checked)
+                }
+              />
+            </Space>
+            {formik.errors.active && formik.touched.active && (
+              <small className="color-danger">{formik.errors.active}</small>
             )}
           </label>
           <label>
@@ -131,7 +151,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               name="quantity"
               type="number"
               value={formik.values.quantity}
-              defaultValue={product.quantity}
+              onChange={formik.handleChange}
             />
             {formik.errors.quantity && formik.touched.quantity && (
               <small className="color-danger">{formik.errors.quantity}</small>
@@ -143,7 +163,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               name="price"
               type="number"
               value={formik.values.price}
-              defaultValue={product.price}
+              onChange={formik.handleChange}
             />
             {formik.errors.price && formik.touched.price && (
               <small className="color-danger">{formik.errors.price}</small>

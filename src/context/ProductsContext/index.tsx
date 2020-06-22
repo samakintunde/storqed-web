@@ -1,10 +1,36 @@
 import React from "react";
 import productsReducer from "./reducer";
-import productsData from "../../data/products";
+import { IProduct } from "../../components/products/ProductsList/products-list";
+import { productsDb } from "../../models/products-db";
+import { priceHistoryDb } from "../../models/price-history-db";
 
-export const initialState = [...productsData];
+export interface IProductsContext {
+  products: {
+    [key: string]: IProduct;
+  };
+  types: string[];
+  priceHistory: {};
+  quantityHistory: {};
+}
 
-const ProductsContext = React.createContext(initialState);
+export type ProductsReducerAction = {
+  type: string;
+  payload: IProduct;
+};
+
+export interface IProductsContextProps {
+  products: IProductsContext;
+  dispatchProducts: React.Dispatch<ProductsReducerAction>;
+}
+
+export const initialState: IProductsContext = {
+  products: productsDb.getProducts(),
+  types: [],
+  priceHistory: priceHistoryDb.getPriceHistories(),
+  quantityHistory: {},
+};
+
+const ProductsContext = React.createContext({} as IProductsContextProps);
 
 export const useProducts = () => React.useContext(ProductsContext);
 
@@ -21,7 +47,6 @@ const ProductsProvider = (props: ProductsProviderProps) => {
   );
 
   return (
-    // @ts-ignore
     <ProductsContext.Provider value={{ products, dispatchProducts }}>
       {children}
     </ProductsContext.Provider>

@@ -1,16 +1,22 @@
 import React from "react";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Space } from "antd";
 import { Link } from "react-router-dom";
+import { PlusCircleFilled } from "@ant-design/icons";
 
 const HomeRoute = () => {
   return (
     <div>
       <Row justify="center">
-        <Col span={6} md={9}>
+        <Space size="small" direction="vertical">
+          <Link to="/products/create">
+            <Button type="primary" icon={<PlusCircleFilled />}>
+              Add a Product
+            </Button>
+          </Link>
           <Link to="/products">
             <Button>View All Products</Button>
           </Link>
-        </Col>
+        </Space>
       </Row>
     </div>
   );

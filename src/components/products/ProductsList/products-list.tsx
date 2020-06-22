@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from "@ant-design/icons";
-import { useHistory, useLocation, Link, Route } from "react-router-dom";
+import { useLocation, Link, Route } from "react-router-dom";
 import ProductEditRoute from "../../../routes/ProductEdit";
+import { Breakpoint } from "antd/lib/_util/responsiveObserve";
+import { deleteProduct } from "../../../actions/Products";
 
 const { Column } = Table;
 
 export interface IProduct {
-  id: number;
+  id: string;
   name: string;
   ean: string;
   type: string;
@@ -22,6 +24,10 @@ type ProductListHeadingProps = {
   title: string;
   dataIndex: string;
   key: string;
+  props?: {
+    colSpan?: number;
+  };
+  responsive?: Breakpoint[];
 };
 
 type ProductsListProps = {
@@ -35,10 +41,6 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
 
   const location = useLocation();
 
-  const handleDelete = (record: IProduct) => {
-    handleProductDelete(record);
-  };
-
   return (
     <div>
       <Table dataSource={products}>
@@ -47,6 +49,8 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
             title={heading.title}
             dataIndex={heading.dataIndex}
             key={heading.key}
+            responsive={heading.responsive}
+            colSpan={heading.props?.colSpan}
           />
         ))}
         <Column
@@ -56,19 +60,12 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
               <Link to={`/products/${record.id}`}>
                 <Button icon={<EyeTwoTone />}>View</Button>
               </Link>
-              <Link
-                to={{
-                  pathname: `/products/${record.id}/edit`,
-                  state: {
-                    background: location,
-                  },
-                }}
-              >
+              <Link to={`/products/${record.id}/edit`}>
                 <Button icon={<EditTwoTone />}>Edit</Button>
               </Link>
               <Button
                 icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
-                onClick={() => handleDelete(record)}
+                onClick={() => handleProductDelete(record)}
               >
                 Delete
               </Button>

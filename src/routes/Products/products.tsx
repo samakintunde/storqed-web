@@ -1,65 +1,69 @@
-import React, { useEffect, useCallback } from "react";
-import { Layout } from "antd";
+import React, { useCallback } from "react";
+import { Layout, Space, Button, Row } from "antd";
 import ProductsList from "../../components/products/ProductsList";
 import { useProducts } from "../../context/ProductsContext";
 import { IProduct } from "../../components/products/ProductsList/products-list";
-import { DELETE_PRODUCT } from "../../context/ProductsContext/action-types";
-import { productsDb } from "../../models/db";
+import { Link } from "react-router-dom";
+import { PlusCircleFilled } from "@ant-design/icons";
+import { deleteProduct } from "../../actions/Products";
 
 const { Content } = Layout;
 
 const Products = () => {
-  // @ts-ignore
   const { products, dispatchProducts } = useProducts();
 
   const handleDelete = useCallback(
     (product: IProduct) => {
-      dispatchProducts({
-        type: DELETE_PRODUCT,
-        payload: product,
-      });
+      deleteProduct(dispatchProducts, product);
     },
     [dispatchProducts]
   );
 
-  useEffect(() => {
-    productsDb.update(products);
-  }, [products]);
-
   return (
     <Layout>
       <Content style={{ padding: "50px 50px 0" }}>
-        <ProductsList
-          headings={[
-            {
-              key: "id",
-              dataIndex: "id",
-              title: "ID",
-            },
-            {
-              key: "name",
-              dataIndex: "name",
-              title: "Name",
-            },
-            {
-              key: "weight",
-              dataIndex: "quantity",
-              title: "Quantity",
-            },
-            {
-              key: "type",
-              dataIndex: "type",
-              title: "Type",
-            },
-            {
-              key: "price",
-              dataIndex: "price",
-              title: "Price",
-            },
-          ]}
-          products={products}
-          handleProductDelete={handleDelete}
-        />
+        <Space style={{ width: "100%" }} direction="vertical" size="large">
+          <Row justify="space-between">
+            <h2>All Products</h2>
+            <Link to="/products/create">
+              <Button type="primary" icon={<PlusCircleFilled />}>
+                Add a Product
+              </Button>
+            </Link>
+          </Row>
+          <ProductsList
+            headings={[
+              {
+                key: "name",
+                dataIndex: "name",
+                title: "Name",
+                props: {
+                  colSpan: 1,
+                },
+              },
+              {
+                key: "type",
+                dataIndex: "type",
+                title: "Product Type",
+                responsive: ["lg"],
+              },
+              {
+                key: "quantity",
+                dataIndex: "quantity",
+                title: "Quantity",
+                responsive: ["sm"],
+              },
+              {
+                key: "price",
+                dataIndex: "price",
+                title: "Price",
+                responsive: ["md"],
+              },
+            ]}
+            products={Object.values(products.products)}
+            handleProductDelete={handleDelete}
+          />
+        </Space>
       </Content>
     </Layout>
   );

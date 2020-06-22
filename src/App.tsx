@@ -9,6 +9,7 @@ import ProductEditRoute from "./routes/ProductEdit";
 import "antd/dist/antd.css";
 import "./App.css";
 import HomeRoute from "./routes/Home";
+import ProductCreateRoute from "./routes/ProductCreate";
 
 function App() {
   const location = useLocation();
@@ -20,10 +21,13 @@ function App() {
     <div className="App">
       <Header title="All Products" />
       <Switch location={background || location}>
-        <Route path="/products/:id/edit">
+        <Route path="/products/create">
+          <ProductCreateRoute />
+        </Route>
+        <Route path="/products/:slug/edit" exact>
           <ProductEditRoute />
         </Route>
-        <Route path="/products/:id" exact>
+        <Route path="/products/:slug" exact>
           <ProductRoute />
         </Route>
         <Route path="/products" exact>

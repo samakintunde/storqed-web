@@ -1,106 +1,101 @@
-import React, { useEffect, useState } from "react";
-import { IProduct } from "../../components/products/ProductsList/products-list";
+import React, { useState } from "react";
 
-import { Button, Space } from "antd";
-import {
-  useParams,
-  useLocation,
-  useHistory,
-  Link,
-  Route,
-} from "react-router-dom";
+import { Button, Space, Tabs } from "antd";
+import { useParams, useHistory, Route, Link } from "react-router-dom";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { useProducts } from "../../context/ProductsContext";
 
-import { DELETE_PRODUCT } from "../../context/ProductsContext/action-types";
-import { productsDb } from "../../models/db";
+import { IProduct } from "../../components/products/ProductsList/products-list";
 import { formatPrice } from "../../utils/amount";
 import ProductEditRoute from "../ProductEdit";
+import { deleteProduct } from "../../actions/Products";
 
-type ProductRouteProps = {
-  product?: IProduct;
-  isEditing?: boolean;
-};
+const { TabPane } = Tabs;
 
-const ProductRoute: React.FC<ProductRouteProps> = (props) => {
-  const [isEditing, setIsEditing] = useState(false);
+const ProductRoute: React.FC = () => {
+  const [editVisible, setEditVisible] = useState(false);
   const history = useHistory();
-  const { id } = useParams();
-  // @ts-ignore
+  const { slug } = useParams();
   const { products, dispatchProducts } = useProducts();
-  const product = products[parseInt(id)];
+  const product = products.products[slug];
 
   const handleDelete = () => {
-    dispatchProducts({
-      type: DELETE_PRODUCT,
-      payload: product,
-    });
+    deleteProduct(dispatchProducts, product);
     history.goBack();
   };
 
-  useEffect(() => {
-    productsDb.update(products);
-  }, [products]);
+  if (!product) return null;
 
   return (
     <div>
-      <Space direction="vertical" size={16}>
-        <div>
-          <p>Name</p>
-          <p>{product.name}</p>
-        </div>
-        <div>
-          <p>EAN</p>
-          {product.ean}
-        </div>
-        <div>
-          <p>Product Type</p>
-          {product.type}
-        </div>
-        <div>
-          <p>Weight</p>
-          {product.weight}
-        </div>
-        <div>
-          <p>Color</p>
-          {product.color}
-        </div>
-        <div>
-          <p>Quantity</p>
-          {product.quantity}
-        </div>
-        <div>
-          <p>Price</p>
-          <>${formatPrice(product.price)}</>
-        </div>
-        <div>
-          <p>Active</p>
-          <p>{product.active.toString()}</p>
-        </div>
-        <Space size="middle">
-          <Space>
-            <Button
-              icon={<EditTwoTone />}
-              htmlType="button"
-              onClick={() => setIsEditing(true)}
-            >
-              Edit
-            </Button>
-            <Button
-              icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
-              htmlType="button"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
+      <Tabs>
+        <TabPane tab="Product Details" key={1}>
+          <Space direction="vertical" size={16}>
+            <div>
+              <p>Name</p>
+              <p>{product.name}</p>
+            </div>
+            <div>
+              <p>EAN</p>
+              {product.ean}
+            </div>
+            <div>
+              <p>Product Type</p>
+              {product.type}
+            </div>
+            <div>
+              <p>Weight</p>
+              {product.weight}
+            </div>
+            <div>
+              <p>Color</p>
+              {product.color}
+            </div>
+            <div>
+              <p>Quantity</p>
+              {product.quantity}
+            </div>
+            <div>
+              <p>Price</p>
+              <>${formatPrice(product.price)}</>
+            </div>
+            <div>
+              <p>Active</p>
+              <p>{product.active.toString()}</p>
+            </div>
+            <Space size="middle">
+              <Space>
+                <Link
+                  to={{
+                    pathname: `/products/${slug}/edit`,
+                    state: {
+                      background: history.location,
+                    },
+                  }}
+                  onClick={() => setEditVisible(true)}
+                >
+                  <Button icon={<EditTwoTone />} htmlType="button">
+                    Edit
+                  </Button>
+                </Link>
+                <Button
+                  icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
+                  htmlType="button"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              </Space>
+            </Space>
           </Space>
-        </Space>
-      </Space>
-      {isEditing && (
-        <Route path={`/products/:id/edit`}>
-          <ProductEditRoute visible={isEditing} setVisible={setIsEditing} />
-        </Route>
-      )}
+        </TabPane>
+        <TabPane tab="Price History" key={2}>
+          <h2>Price History</h2>
+        </TabPane>
+        <TabPane tab="Quantity History" key={3}>
+          <h2>Quantity History</h2>
+        </TabPane>
+      </Tabs>
     </div>
   );
 };

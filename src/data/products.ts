@@ -4,7 +4,7 @@ const products: IProduct[] = Array.from(Array(10), (item, index) => {
   const id = ++index;
 
   return {
-    id: id,
+    id: id + "",
     name: `Product ${id}`,
     ean: `${Math.floor(Math.random() * id * 1_000_000_000)}`,
     type: "Product Type",
