@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Space, Table } from "antd";
 import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from "@ant-design/icons";
-import { useLocation, Link, Route } from "react-router-dom";
-import ProductEditRoute from "../../../routes/ProductEdit";
+import { Link } from "react-router-dom";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
-import { deleteProduct } from "../../../actions/Products";
 import { useTranslation } from "react-i18next";
 
 const { Column } = Table;

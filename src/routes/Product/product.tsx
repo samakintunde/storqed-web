@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Space, Tabs } from "antd";
-import { useParams, useHistory, Route, Link } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { Options as HighChartsOptions } from "highcharts";
 import LineChart from "../../components/product/LineChart";
