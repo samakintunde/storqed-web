@@ -1,20 +1,23 @@
 import React from "react";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Row, Space } from "antd";
 import { Link } from "react-router-dom";
 import { PlusCircleFilled } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const HomeRoute = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <Row justify="center">
-        <Space size="small" direction="vertical">
+        <Space align="center" size="large" direction="vertical">
           <Link to="/products/create">
             <Button type="primary" icon={<PlusCircleFilled />}>
-              Add a Product
+              {t("actions.add_product")}
             </Button>
           </Link>
           <Link to="/products">
-            <Button>View All Products</Button>
+            <Button>{t("actions.view_products")}</Button>
           </Link>
         </Space>
       </Row>

@@ -7,6 +7,7 @@ import { parseWeight } from "../../utils/weight";
 import { Input, Button, Modal, Space, Row, Col, Checkbox } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { updateProduct } from "../../actions/Products";
+import { useTranslation } from "react-i18next";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Product name is required"),
@@ -31,6 +32,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
   const history = useHistory();
   const { slug } = useParams();
   const { products, dispatchProducts } = useProducts();
+  const { t } = useTranslation();
 
   const product = products.products[slug];
 
@@ -75,7 +77,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
       <form onSubmit={formik.handleSubmit}>
         <Space style={{ width: "100%" }} size="small" direction="vertical">
           <label>
-            <small>Name</small>
+            <small>{t("form_label.name")}</small>
             <Input
               name="name"
               value={formik.values.name}
@@ -86,7 +88,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>EAN</small>
+            <small>{t("form_label.ean")}</small>
             <Input
               name="ean"
               value={formik.values.ean}
@@ -97,7 +99,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>Type</small>
+            <small>{t("form_label.type")}</small>
             <Input
               name="type"
               value={formik.values.type}
@@ -108,7 +110,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>Weight</small>
+            <small>{t("form_label.weight")}</small>
             <Input
               name="weight"
               type="number"
@@ -120,7 +122,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>Color</small>
+            <small>{t("form_label.color")}</small>
             <Input
               name="color"
               value={formik.values.color}
@@ -132,7 +134,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
           </label>
           <label>
             <Space>
-              <small>Active</small>
+              <small>{t("form_label.active")}</small>
               <Checkbox
                 name="active"
                 checked={formik.values.active}
@@ -146,7 +148,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>Quantity</small>
+            <small>{t("form_label.quantity")}</small>
             <Input
               name="quantity"
               type="number"
@@ -158,7 +160,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
             )}
           </label>
           <label>
-            <small>Price</small>
+            <small>{t("form_label.price")}</small>
             <Input
               name="price"
               type="number"
@@ -171,7 +173,10 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
           </label>
           <Row justify="end">
             <Col>
-              <Button onClick={() => handleCancel()}>Cancel</Button>,
+              <Button onClick={() => handleCancel()}>
+                {t("actions.cancel")}
+              </Button>
+              ,
             </Col>
             <Col>
               <Button
@@ -179,7 +184,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
                 type="primary"
                 htmlType="submit"
               >
-                Save
+                <small>{t("actions.save")}</small>
               </Button>
             </Col>
           </Row>
