@@ -19,6 +19,11 @@ i18n
     fallbackLng: "en",
     debug: true,
 
+    react: {
+      useSuspense: false,
+      wait: false,
+    },
+
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
