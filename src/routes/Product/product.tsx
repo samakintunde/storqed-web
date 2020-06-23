@@ -1,23 +1,53 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Button, Space, Tabs } from "antd";
 import { useParams, useHistory, Route, Link } from "react-router-dom";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
+import { Options as HighChartsOptions } from "highcharts";
+import LineChart from "../../components/product/LineChart";
 import { useProducts } from "../../context/ProductsContext";
-
-import { IProduct } from "../../components/products/ProductsList/products-list";
 import { formatPrice } from "../../utils/amount";
-import ProductEditRoute from "../ProductEdit";
 import { deleteProduct } from "../../actions/Products";
+import { priceHistoryDb } from "../../models/price-history-db";
+import { quantityHistoryDb } from "../../models/quantity-history-db";
 
 const { TabPane } = Tabs;
 
+const generateChartsOptions = (
+  title: string = "",
+  data: number[]
+): HighChartsOptions => {
+  return {
+    title: {
+      text: title,
+    },
+    series: [
+      {
+        type: "line",
+        data,
+      },
+    ],
+  };
+};
+
 const ProductRoute: React.FC = () => {
-  const [editVisible, setEditVisible] = useState(false);
   const history = useHistory();
   const { slug } = useParams();
   const { products, dispatchProducts } = useProducts();
   const product = products.products[slug];
+  const [priceChartOptions, setPriceChartOptions] = useState<HighChartsOptions>(
+    generateChartsOptions(
+      "Product History",
+      priceHistoryDb.getPriceHistories()[product.id].reverse()
+    )
+  );
+  const [quantityChartOptions, setQuantityChartOptions] = useState<
+    HighChartsOptions
+  >(
+    generateChartsOptions(
+      "Quantity History Chart",
+      quantityHistoryDb.getQuantityHistories()[product.id].reverse()
+    )
+  );
 
   const handleDelete = () => {
     deleteProduct(dispatchProducts, product);
@@ -72,7 +102,6 @@ const ProductRoute: React.FC = () => {
                       background: history.location,
                     },
                   }}
-                  onClick={() => setEditVisible(true)}
                 >
                   <Button icon={<EditTwoTone />} htmlType="button">
                     Edit
@@ -89,11 +118,14 @@ const ProductRoute: React.FC = () => {
             </Space>
           </Space>
         </TabPane>
-        <TabPane tab="Price History" key={2}>
+
+        <TabPane destroyInactiveTabPane tab="Price History" key={2}>
           <h2>Price History</h2>
+          <LineChart options={priceChartOptions} />
         </TabPane>
-        <TabPane tab="Quantity History" key={3}>
+        <TabPane destroyInactiveTabPane tab="Quantity History" key={3}>
           <h2>Quantity History</h2>
+          <LineChart options={quantityChartOptions} />
         </TabPane>
       </Tabs>
     </div>

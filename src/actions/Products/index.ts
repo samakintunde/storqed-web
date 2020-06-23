@@ -7,6 +7,7 @@ import { IProduct } from "../../components/products/ProductsList/products-list";
 import { ProductsReducerAction } from "../../context/ProductsContext";
 import { productsDb } from "../../models/products-db";
 import { priceHistoryDb } from "../../models/price-history-db";
+import { quantityHistoryDb } from "../../models/quantity-history-db";
 
 export const addProduct = (
   dispatch: React.Dispatch<ProductsReducerAction>,
@@ -18,6 +19,7 @@ export const addProduct = (
   });
   productsDb.addProduct(payload);
   priceHistoryDb.addPriceHistory(payload);
+  quantityHistoryDb.addQuantityHistory(payload);
 };
 export const updateProduct = (
   dispatch: React.Dispatch<ProductsReducerAction>,
@@ -29,6 +31,7 @@ export const updateProduct = (
   });
   productsDb.updateProduct(payload.id, payload);
   priceHistoryDb.updatePriceHistory(payload);
+  quantityHistoryDb.updateQuantityHistory(payload);
 };
 export const deleteProduct = (
   dispatch: React.Dispatch<ProductsReducerAction>,
@@ -40,4 +43,5 @@ export const deleteProduct = (
   });
   productsDb.deleteProduct(payload);
   priceHistoryDb.deletePriceHistory(payload);
+  quantityHistoryDb.deleteQuantityHistory(payload);
 };
