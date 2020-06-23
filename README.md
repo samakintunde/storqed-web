@@ -1,6 +1,7 @@
 # Storqed
 
-A world class warehouse management system
+A world class warehouse management system.
+Hosted at https://storqed.samakintunde.com
 
 ### Deploy Status
 
