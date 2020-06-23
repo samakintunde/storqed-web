@@ -9,19 +9,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import { updateProduct } from "../../actions/Products";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet";
-
-const validationSchema = Yup.object({
-  name: Yup.string().required("Product name is required"),
-  ean: Yup.string()
-    .min(12, "EAN must at least be 12 digits")
-    .max(16, "EAN must not be more than 16 digits")
-    .required("EAN is required"),
-  type: Yup.string().required("Product type is required"),
-  weight: Yup.number().min(1),
-  color: Yup.string(),
-  active: Yup.bool().required(),
-  price: Yup.number().required("Price is required"),
-});
+import { validationSchema } from "../ProductCreate/product-create";
 
 type ProductEditRouteProps = {
   visible?: boolean;
@@ -88,7 +76,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               onChange={formik.handleChange}
             />
             {formik.errors.name && formik.touched.name && (
-              <small className="color-danger">{formik.errors.name}</small>
+              <small className="color-danger">{t(formik.errors.name)}</small>
             )}
           </label>
           <label>
@@ -99,7 +87,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               onChange={formik.handleChange}
             />
             {formik.errors.ean && formik.touched.ean && (
-              <small className="color-danger">{formik.errors.ean}</small>
+              <small className="color-danger">{t(formik.errors.ean)}</small>
             )}
           </label>
           <label>
@@ -110,11 +98,11 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               onChange={formik.handleChange}
             />
             {formik.errors.type && formik.touched.type && (
-              <small className="color-danger">{formik.errors.type}</small>
+              <small className="color-danger">{t(formik.errors.type)}</small>
             )}
           </label>
           <label>
-            <small>{t("form_label.weight")}</small>
+            <small>{t("form_label.weight")}(g)</small>
             <Input
               name="weight"
               type="number"
@@ -160,7 +148,9 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               onChange={formik.handleChange}
             />
             {formik.errors.quantity && formik.touched.quantity && (
-              <small className="color-danger">{formik.errors.quantity}</small>
+              <small className="color-danger">
+                {t(formik.errors.quantity)}
+              </small>
             )}
           </label>
           <label>
@@ -172,7 +162,7 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
               onChange={formik.handleChange}
             />
             {formik.errors.price && formik.touched.price && (
-              <small className="color-danger">{formik.errors.price}</small>
+              <small className="color-danger">{t(formik.errors.price)}</small>
             )}
           </label>
           <Row justify="end">

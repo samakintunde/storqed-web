@@ -9,17 +9,18 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet";
 
-const validationSchema = Yup.object({
-  name: Yup.string().required("Product name is required"),
+export const validationSchema = Yup.object({
+  name: Yup.string().required("form_error.name.required"),
   ean: Yup.string()
-    .min(12, "EAN must at least be 12 digits")
-    .max(16, "EAN must not be more than 16 digits")
-    .required("EAN is required"),
-  type: Yup.string().required("Product type is required"),
+    .min(12, "form_error.ean.min")
+    .max(16, "form_error.ean.max")
+    .required("form_error.ean.required"),
+  type: Yup.string().required("form_error.type.required"),
   weight: Yup.number().min(1),
   color: Yup.string(),
   active: Yup.bool().required(),
-  price: Yup.number().required("Price is required"),
+  quantity: Yup.number().required("form_error.quantity.required"),
+  price: Yup.number().required("form_error.price.required"),
 });
 
 const ProductCreateRoute: React.FC = () => {
@@ -69,7 +70,7 @@ const ProductCreateRoute: React.FC = () => {
                 onChange={formik.handleChange}
               />
               {formik.errors.name && formik.touched.name && (
-                <small className="color-danger">{formik.errors.name}</small>
+                <small className="color-danger">{t(formik.errors.name)}</small>
               )}
             </label>
             <label>
@@ -81,7 +82,7 @@ const ProductCreateRoute: React.FC = () => {
                 onChange={formik.handleChange}
               />
               {formik.errors.ean && formik.touched.ean && (
-                <small className="color-danger">{formik.errors.ean}</small>
+                <small className="color-danger">{t(formik.errors.ean)}</small>
               )}
             </label>
             <label>
@@ -92,11 +93,11 @@ const ProductCreateRoute: React.FC = () => {
                 onChange={formik.handleChange}
               />
               {formik.errors.type && formik.touched.type && (
-                <small className="color-danger">{formik.errors.type}</small>
+                <small className="color-danger">{t(formik.errors.type)}</small>
               )}
             </label>
             <label>
-              <small>{t("form_label.weight")}</small>
+              <small>{t("form_label.weight")}(g)</small>
               <Input
                 name="weight"
                 type="number"
@@ -142,7 +143,9 @@ const ProductCreateRoute: React.FC = () => {
                 onChange={formik.handleChange}
               />
               {formik.errors.quantity && formik.touched.quantity && (
-                <small className="color-danger">{formik.errors.quantity}</small>
+                <small className="color-danger">
+                  {t(formik.errors.quantity)}
+                </small>
               )}
             </label>
             <label>
@@ -154,7 +157,7 @@ const ProductCreateRoute: React.FC = () => {
                 onChange={formik.handleChange}
               />
               {formik.errors.price && formik.touched.price && (
-                <small className="color-danger">{formik.errors.price}</small>
+                <small className="color-danger">{t(formik.errors.price)}</small>
               )}
             </label>
             <Button type="primary" htmlType="submit">

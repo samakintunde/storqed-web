@@ -33,6 +33,25 @@
     "price": "Prix",
     "active": "Active"
   },
+  "form_error": {
+    "name": {
+      "required": "Le nom du produit est obligatoire"
+    },
+    "ean": {
+      "min": "EAN doit contenir au moins 12 chiffres",
+      "max": "EAN ne doit pas comporter plus de 16 chiffres",
+      "required": "EAN est requis"
+    },
+    "type": {
+      "required": "Le type de produit est requis"
+    },
+    "quantity": {
+      "required": "La quantité est requise"
+    },
+    "price": {
+      "required": "Le prix est requis"
+    }
+  },
   "price": "Prix",
   "quantity": "Quantité"
 }
