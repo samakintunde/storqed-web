@@ -15,12 +15,17 @@
     "@types/yup": "^0.29.3",
     "antd": "^4.3.4",
     "formik": "^2.1.4",
+    "i18next": "^19.5.1",
+    "i18next-browser-languagedetector": "^5.0.0",
+    "i18next-http-backend": "^1.0.15",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-i18next": "^11.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2",
+    "uuid": "^8.1.0",
     "yup": "^0.29.1"
   },
   "scripts": {
@@ -43,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.0.0"
   }
 }

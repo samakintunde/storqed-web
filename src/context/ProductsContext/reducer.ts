@@ -1,38 +1,29 @@
-import { IProduct } from "../../components/products/ProductsList/products-list";
 import { ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from "./action-types";
-import { productsDb } from "../../models/db";
-import { initialState } from ".";
-
-type ProductsReducerAction = {
-  type: string;
-  payload: IProduct;
-};
+import { IProductsContext, ProductsReducerAction } from ".";
 
 const productsReducer = (
-  state: IProduct[] = initialState,
+  state: IProductsContext,
   action: ProductsReducerAction
 ) => {
   const { payload, type } = action;
 
   switch (type) {
     case ADD_PRODUCT:
-      const newProducts = [...state, payload];
-      return newProducts;
+      return {
+        ...state,
+        products: { ...state.products, [payload.id]: payload },
+      };
 
     case UPDATE_PRODUCT:
-      let updatedProducts = state.map((product) => {
-        if (product.id === payload.id) {
-          product = payload;
-        }
-        return product;
-      });
-      return updatedProducts;
+      return {
+        ...state,
+        products: { ...state.products, [payload.id]: payload },
+      };
 
     case DELETE_PRODUCT:
-      let filteredProducts = state.filter(
-        (product) => product.id !== payload.id
-      );
-      return filteredProducts;
+      const clonedState = { ...state };
+      delete clonedState.products[payload.id];
+      return clonedState;
 
     default:
       return state;
