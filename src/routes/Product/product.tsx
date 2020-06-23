@@ -3,6 +3,7 @@ import { Button, Space, Tabs } from "antd";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import { Options as HighChartsOptions } from "highcharts";
+import { Helmet } from "react-helmet";
 import LineChart from "../../components/product/LineChart";
 import { useProducts } from "../../context/ProductsContext";
 import { formatPrice } from "../../utils/amount";
@@ -79,6 +80,9 @@ const ProductRoute: React.FC = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>{product.name} | Storqed</title>
+      </Helmet>
       <Tabs>
         <TabPane tab={t("product.tab_header.product_details")} key={1}>
           <Space direction="vertical" size={16}>

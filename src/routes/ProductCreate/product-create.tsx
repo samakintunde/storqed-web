@@ -7,6 +7,7 @@ import { v4 as uuid } from "uuid";
 import { addProduct } from "../../actions/Products";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Product name is required"),
@@ -53,6 +54,9 @@ const ProductCreateRoute: React.FC = () => {
 
   return (
     <Row>
+      <Helmet>
+        <title>Add Product | Storqed</title>
+      </Helmet>
       <Col span={12}>
         <form onSubmit={formik.handleSubmit}>
           <h4>{t("actions.add_product")}</h4>

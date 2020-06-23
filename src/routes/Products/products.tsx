@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { deleteProduct } from "../../actions/Products";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 
 const { Content } = Layout;
 
@@ -23,6 +24,9 @@ const Products = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>All Products | Storqed</title>
+      </Helmet>
       <Content style={{ padding: "50px 50px 0" }}>
         <Space style={{ width: "100%" }} direction="vertical" size="large">
           <Row justify="space-between">
