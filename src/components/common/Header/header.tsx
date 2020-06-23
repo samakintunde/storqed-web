@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PageHeader, Select } from "antd";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,14 +7,17 @@ const { Option } = Select;
 
 const Header: React.FC = () => {
   const history = useHistory();
+  const [isHome, setIsHome] = useState(history.location.pathname === "/");
   const { t, i18n } = useTranslation();
+
+  history.listen((location) => {
+    location.pathname === "/" ? setIsHome(true) : setIsHome(false);
+  });
 
   return (
     <header>
       <PageHeader
-        onBack={
-          history.location.pathname == "/" ? undefined : () => history.goBack()
-        }
+        onBack={isHome ? undefined : () => history.goBack()}
         title="Storqed"
         extra={[
           <Select

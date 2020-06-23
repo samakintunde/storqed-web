@@ -12,11 +12,6 @@ import HomeRoute from "./routes/Home";
 import ProductCreateRoute from "./routes/ProductCreate";
 
 function App() {
-  // const location = useLocation();
-
-  // @ts-ignore
-  // let background = location.state && location.state.background;
-
   return (
     <div className="App">
       <Header />
