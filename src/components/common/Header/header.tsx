@@ -1,5 +1,6 @@
 import React from "react";
 import { PageHeader } from "antd";
+import { useLocation, useHistory } from "react-router-dom";
 
 type HeaderProps = {
   onBack?: () => void;
@@ -10,9 +11,16 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = (props) => {
   const { onBack, title, subtitle } = props;
 
+  const location = useLocation();
+  const history = useHistory();
+
   return (
     <header>
-      <PageHeader onBack={onBack} title={title} subTitle={subtitle} />
+      <PageHeader
+        onBack={location.pathname === "/" ? undefined : history.goBack}
+        title={title}
+        subTitle={subtitle}
+      />
     </header>
   );
 };
