@@ -1,0 +1,38 @@
+{
+  "languages": {
+    "english": "English",
+    "french": "French"
+  },
+  "products": {
+    "title": "All Products",
+    "list_header": ["Name", "Product Type", "Quantity", "Price"]
+  },
+  "actions": {
+    "add_product": "Add Product",
+    "view_products": "View All Products",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save Product"
+  },
+  "product": {
+    "tab_header": {
+      "product_details": "Product Details",
+      "price_history": "Price History",
+      "quantity_history": "Quantity History"
+    }
+  },
+  "form_label": {
+    "name": "Name",
+    "ean": "EAN",
+    "type": "Product Type",
+    "weight": "Weight",
+    "color": "Color",
+    "quantity": "Quantity",
+    "price": "Price",
+    "active": "Active"
+  },
+  "price": "Price",
+  "quantity": "Quantity"
+}

@@ -6,6 +6,7 @@ import { useProducts } from "../../context/ProductsContext";
 import { v4 as uuid } from "uuid";
 import { addProduct } from "../../actions/Products";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Product name is required"),
@@ -23,6 +24,7 @@ const validationSchema = Yup.object({
 const ProductCreateRoute: React.FC = () => {
   const { dispatchProducts } = useProducts();
   const history = useHistory();
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +47,6 @@ const ProductCreateRoute: React.FC = () => {
         weight: values.weight + "g",
       };
       addProduct(dispatchProducts, payload);
-      console.log(id);
       history.replace(`/products/${id}`);
     },
   });
@@ -54,10 +55,10 @@ const ProductCreateRoute: React.FC = () => {
     <Row>
       <Col span={12}>
         <form onSubmit={formik.handleSubmit}>
-          <h4>Add Product</h4>
+          <h4>{t("actions.add_product")}</h4>
           <Space style={{ width: "100%" }} size="small" direction="vertical">
             <label>
-              <small>Name</small>
+              <small>{t("form_label.name")}</small>
               <Input
                 name="name"
                 value={formik.values.name}
@@ -68,7 +69,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>EAN</small>
+              <small>{t("form_label.ean")}</small>
               <Input
                 name="ean"
                 type="number"
@@ -80,7 +81,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>Type</small>
+              <small>{t("form_label.type")}</small>
               <Input
                 name="type"
                 value={formik.values.type}
@@ -91,7 +92,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>Weight</small>
+              <small>{t("form_label.weight")}</small>
               <Input
                 name="weight"
                 type="number"
@@ -103,7 +104,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>Color</small>
+              <small>{t("form_label.color")}</small>
               <Input
                 name="color"
                 value={formik.values.color}
@@ -115,7 +116,7 @@ const ProductCreateRoute: React.FC = () => {
             </label>
             <label>
               <Space>
-                <small>Active</small>
+                <small>{t("form_label.active")}</small>
                 <Checkbox
                   name="active"
                   checked={formik.values.active}
@@ -129,7 +130,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>Quantity</small>
+              <small>{t("form_label.quantity")}</small>
               <Input
                 name="quantity"
                 type="number"
@@ -141,7 +142,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <label>
-              <small>Price</small>
+              <small>{t("form_label.price")}</small>
               <Input
                 name="price"
                 type="number"
@@ -153,7 +154,7 @@ const ProductCreateRoute: React.FC = () => {
               )}
             </label>
             <Button type="primary" htmlType="submit">
-              Add Product
+              {t("actions.add_product")}
             </Button>
           </Space>
         </form>

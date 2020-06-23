@@ -5,6 +5,7 @@ import { useLocation, Link, Route } from "react-router-dom";
 import ProductEditRoute from "../../../routes/ProductEdit";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { deleteProduct } from "../../../actions/Products";
+import { useTranslation } from "react-i18next";
 
 const { Column } = Table;
 
@@ -38,6 +39,7 @@ type ProductsListProps = {
 
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products, handleProductDelete } = props;
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -56,16 +58,16 @@ const ProductsList: React.FC<ProductsListProps> = (props) => {
           render={(record) => (
             <Space size="middle">
               <Link to={`/products/${record.id}`}>
-                <Button icon={<EyeTwoTone />}>View</Button>
+                <Button icon={<EyeTwoTone />}>{t("actions.view")}</Button>
               </Link>
               <Link to={`/products/${record.id}/edit`}>
-                <Button icon={<EditTwoTone />}>Edit</Button>
+                <Button icon={<EditTwoTone />}>{t("actions.edit")}</Button>
               </Link>
               <Button
                 icon={<DeleteTwoTone twoToneColor="#D47B6E" />}
                 onClick={() => handleProductDelete(record)}
               >
-                Delete
+                {t("actions.delete")}
               </Button>
             </Space>
           )}

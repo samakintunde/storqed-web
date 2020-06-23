@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Header from "./components/common/Header";
 import ProductsRoute from "./routes/Products";
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header title="All Products" />
+      <Header />
       <Switch>
         <Route path="/products/create">
           <ProductCreateRoute />
