@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useProducts } from "../../context/ProductsContext";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { parseWeight } from "../../utils/weight";
 import { Input, Button, Modal, Space, Row, Col, Checkbox } from "antd";
