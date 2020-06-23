@@ -8,6 +8,7 @@ import { Input, Button, Modal, Space, Row, Col, Checkbox } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { updateProduct } from "../../actions/Products";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Product name is required"),
@@ -74,6 +75,9 @@ const ProductEditRoute = (props: ProductEditRouteProps) => {
 
   return (
     <Modal visible={visible || true} footer={null} onCancel={handleCancel}>
+      <Helmet>
+        <title>Edit Product | Storqed</title>
+      </Helmet>
       <form onSubmit={formik.handleSubmit}>
         <Space style={{ width: "100%" }} size="small" direction="vertical">
           <label>
