@@ -39,8 +39,6 @@ type ProductsListProps = {
 const ProductsList: React.FC<ProductsListProps> = (props) => {
   const { headings, products, handleProductDelete } = props;
 
-  const location = useLocation();
-
   return (
     <div>
       <Table dataSource={products}>

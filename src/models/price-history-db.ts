@@ -58,13 +58,13 @@ class PriceHistoryDb {
   }
 
   getPriceHistory(id: string) {
-    const priceHistory: IPriceHistory = this.db.get(this.dbKey);
-    return priceHistory[id];
+    const priceHistories: IPriceHistory = this.db.get(this.dbKey);
+    return priceHistories[id];
   }
 
   getPriceHistories() {
-    const priceHistory: IPriceHistory = this.db.get(this.dbKey);
-    return priceHistory;
+    const priceHistories: IPriceHistory = this.db.get(this.dbKey);
+    return priceHistories;
   }
 }
 

@@ -12,15 +12,15 @@ import HomeRoute from "./routes/Home";
 import ProductCreateRoute from "./routes/ProductCreate";
 
 function App() {
-  const location = useLocation();
+  // const location = useLocation();
 
   // @ts-ignore
-  let background = location.state && location.state.background;
+  // let background = location.state && location.state.background;
 
   return (
     <div className="App">
       <Header title="All Products" />
-      <Switch location={background || location}>
+      <Switch>
         <Route path="/products/create">
           <ProductCreateRoute />
         </Route>
