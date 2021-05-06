@@ -16,7 +16,7 @@
     "@types/yup": "^0.29.3",
     "antd": "^4.3.4",
     "formik": "^2.1.4",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "highcharts-react-official": "^3.0.0",
     "i18next": "^19.5.1",
     "i18next-browser-languagedetector": "^5.0.0",
